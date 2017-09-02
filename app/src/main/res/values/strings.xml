@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">SimpleTwitterClient</string>
+
+    <string name="error_an_error_occurred_try_again">Произошла ошибка, попробуйте еще раз</string>
+
 </resources>
