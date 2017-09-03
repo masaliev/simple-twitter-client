@@ -2,5 +2,11 @@
     <string name="app_name">SimpleTwitterClient</string>
 
     <string name="error_an_error_occurred_try_again">There was an error, please try again</string>
+    <string name="new_tweet">New Tweet</string>
+    <string name="send">Send</string>
+    <string name="symbols_count">%1$d/%2$d</string>
+
+    <string name="sending">Sending</string>
+    <string name="please_wait">Please wait</string>
 
 </resources>

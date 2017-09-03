@@ -10,9 +10,27 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+        <RelativeLayout
+            android:id="@+id/rlStatusWrapper"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:descendantFocusability="beforeDescendants"
+            android:focusable="true"
+            android:focusableInTouchMode="true">
+            <EditText
+                android:id="@+id/etStatus"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/edit_text_border"
+                android:layout_margin="10dp"
+                android:hint="@string/new_tweet"
+                android:transitionName="edit_text_status"/>
+
+        </RelativeLayout>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rvTweets"
+            android:layout_below="@+id/rlStatusWrapper"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </RelativeLayout>

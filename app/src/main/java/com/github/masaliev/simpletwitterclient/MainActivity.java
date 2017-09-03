@@ -1,5 +1,8 @@
 package com.github.masaliev.simpletwitterclient;
 
+import android.app.Activity;
+import android.app.ActivityOptions;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -7,7 +10,9 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.twitter.sdk.android.core.Callback;
@@ -25,6 +30,7 @@ import retrofit2.Call;
 public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
 
     private static final int ITEMS_PER_PAGE = 20;
+    private static final int REQUEST_CODE_NEW_TWEET = 45;
 
     private SwipeRefreshLayout swipeRefreshLayout;
 
@@ -65,11 +71,30 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
 
                 if (!mIsLoading && totalItemCount <= (lastVisibleItem + visibleThreshold) && dy > 0) {
-                    Log.d("SCROLL_TEST", "getOlderTweets");
                     getOlderTweets();
                 }
             }
         });
+
+        final RelativeLayout rlStatusWrapper = (RelativeLayout) findViewById(R.id.rlStatusWrapper);
+        final EditText etStatus = (EditText) findViewById(R.id.etStatus);
+        etStatus.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                if(b){
+                    rlStatusWrapper.requestFocus();
+                    Intent intent = new Intent(MainActivity.this, NewTweetActivity.class);
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+                        ActivityOptions options = ActivityOptions
+                                .makeSceneTransitionAnimation(MainActivity.this, etStatus, "edit_text_status");
+                        startActivityForResult(intent, REQUEST_CODE_NEW_TWEET, options.toBundle());
+                    }else {
+                        startActivityForResult(intent, REQUEST_CODE_NEW_TWEET);
+                    }
+                }
+            }
+        });
+
 
         getOlderTweets();
     }
@@ -134,5 +159,15 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     @Override
     public void onRefresh() {
         getNewTweets();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == REQUEST_CODE_NEW_TWEET){
+            if(resultCode == Activity.RESULT_OK){
+                getNewTweets();
+            }
+        }
     }
 }
