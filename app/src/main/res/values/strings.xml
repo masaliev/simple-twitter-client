@@ -9,4 +9,6 @@
     <string name="sending">Sending</string>
     <string name="please_wait">Please wait</string>
 
+    <string name="logout">Logout</string>
+
 </resources>
